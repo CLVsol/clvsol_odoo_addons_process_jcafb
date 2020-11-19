@@ -5,3 +5,4 @@
 # from . import family_address_restore
 # from . import person_family_restore
 # from . import survey_user_input_copy
+from . import reregistration_import_xls
