@@ -7,7 +7,7 @@ import logging
 from functools import reduce
 from ast import literal_eval
 import xlrd
-import datetime
+from datetime import datetime
 
 from odoo import models
 
@@ -25,6 +25,10 @@ class AbstractProcess(models.AbstractModel):
     def _do_reregistration_import_xls(self, schedule):
 
         _logger.info(u'%s %s', '>>>>>>>> schedule:', schedule.name)
+
+        schedule.processing_log = 'Executing: "' + '_do_reregistration_import_xls' + '"...\n\n'
+        schedule.processing_log += '>>>>>>>> schedule:' + schedule.name + '"...\n\n'
+        date_last_exec = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
         from time import time
         start = time()
@@ -132,19 +136,15 @@ class AbstractProcess(models.AbstractModel):
 
                     if address_aux.reg_state != 'revised':
                         address_aux.reg_state = 'revised'
-
                     if address_aux.state != 'available':
                         address_aux.state = 'available'
-
                     if address_aux.phase_id.id != phase_id:
                         address_aux.phase_id = phase_id
 
                     if person_aux.reg_state != 'revised':
                         person_aux.reg_state = 'revised'
-
                     if person_aux.state != 'available':
                         person_aux.state = 'available'
-
                     if person_aux.phase_id.id != phase_id:
                         person_aux.phase_id = phase_id
 
@@ -235,7 +235,7 @@ class AbstractProcess(models.AbstractModel):
                     if person_aux.phase_id.id != phase_id:
                         person_aux.phase_id = phase_id
 
-                if new_person is True and change_address is True and new_address is False:
+                elif new_person is True and change_address is True and new_address is False:
 
                     vals = {}
                     vals['name'] = person_name
@@ -243,7 +243,7 @@ class AbstractProcess(models.AbstractModel):
                     datetime_date = xlrd.xldate_as_datetime(date_of_birth, 0)
                     date_object = datetime_date.date()
                     string_date = date_object.isoformat()
-                    vals['birthday'] = datetime.datetime.strptime(string_date, '%Y-%m-%d')
+                    vals['birthday'] = datetime.strptime(string_date, '%Y-%m-%d')
                     person_aux = PersonAux.create(vals)
 
                     if person_aux.ref_address_id.id != address.id:
@@ -271,7 +271,7 @@ class AbstractProcess(models.AbstractModel):
                     if address_aux.phase_id.id != phase_id:
                         address_aux.phase_id = phase_id
 
-                if new_person is True and change_address is True and new_address is True:
+                elif new_person is True and change_address is True and new_address is True:
 
                     vals = {}
                     vals['zip'] = CEP
@@ -299,7 +299,7 @@ class AbstractProcess(models.AbstractModel):
                     datetime_date = xlrd.xldate_as_datetime(date_of_birth, 0)
                     date_object = datetime_date.date()
                     string_date = date_object.isoformat()
-                    vals['birthday'] = datetime.datetime.strptime(string_date, '%Y-%m-%d')
+                    vals['birthday'] = datetime.strptime(string_date, '%Y-%m-%d')
                     person_aux = PersonAux.create(vals)
 
                     if person_aux.ref_address_id.id != address.id:
@@ -319,3 +319,7 @@ class AbstractProcess(models.AbstractModel):
                         person_aux.phase_id = phase_id
 
         _logger.info(u'%s %s', '>>>>>>>> Execution time: ', secondsToStr(time() - start))
+
+        schedule.processing_log +=  \
+            'date_last_exec: ' + str(date_last_exec) + '\n' + \
+            'Execution time: ' + str(secondsToStr(time() - start)) + '\n'
