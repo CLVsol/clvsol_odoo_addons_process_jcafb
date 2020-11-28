@@ -15,7 +15,6 @@
         # 'clv_base_jcafb',
     ],
     'data': [
-        # 'data/person_family_restore.xml',
         # 'data/survey_user_input_copy.xml',
         'data/reregistration_import_xls.xml',
     ],
