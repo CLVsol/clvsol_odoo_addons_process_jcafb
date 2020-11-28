@@ -12,10 +12,8 @@
     'website': 'https://github.com/CLVsol',
     'depends': [
         'clv_processing',
-        # 'clv_base_jcafb',
     ],
     'data': [
-        # 'data/survey_user_input_copy.xml',
         'data/reregistration_import_xls.xml',
     ],
     'demo': [],
