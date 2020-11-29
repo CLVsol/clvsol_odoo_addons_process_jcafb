@@ -59,7 +59,18 @@ class AbstractProcess(models.AbstractModel):
 
         CEP = '17455-000'
 
+        row_count = 0
+        reg_count_x = 0
+        reg_count_0 = 0
+        reg_count_1 = 0
+        reg_count_2 = 0
+        reg_count_3 = 0
+        reg_count_4 = 0
+        reg_count_5 = 0
+
         for i in range(sheet.nrows):
+
+            row_count += 1
 
             rec = sheet.cell_value(i, 0)
             ok = sheet.cell_value(i, 1)
@@ -73,6 +84,8 @@ class AbstractProcess(models.AbstractModel):
             # responsible = shOk: %seet.cell_value(i, 9)
 
             if ok == 'x':
+
+                reg_count_x += 1
 
                 _logger.info(u'>>>>>>>>>> Rec: %s, Ok: %s, Name: %s, Address: %s', rec, ok, person_name, address_name)
 
@@ -134,6 +147,9 @@ class AbstractProcess(models.AbstractModel):
 
                 if new_person is False and change_address is False and new_address is False:
 
+                    reg_count_0 += 1
+                    _logger.info(u'>>>>>>>>>>>>>>>> [0]: %s', reg_count_0)
+
                     if address_aux.reg_state != 'revised':
                         address_aux.reg_state = 'revised'
                     if address_aux.state != 'available':
@@ -150,32 +166,33 @@ class AbstractProcess(models.AbstractModel):
 
                 elif new_person is False and change_address is True and new_address is False:
 
-                    if person_aux.reg_state != 'revised':
-                        person_aux.reg_state = 'revised'
+                    reg_count_1 += 1
+                    _logger.info(u'>>>>>>>>>>>>>>>> [1]: %s', reg_count_1)
 
-                    if person_aux.state != 'available':
-                        person_aux.state = 'available'
-
-                    if person_aux.phase_id.id != phase_id:
-                        person_aux.phase_id = phase_id
+                    if address_aux.reg_state != 'revised':
+                        address_aux.reg_state = 'revised'
+                    if address_aux.state != 'available':
+                        address_aux.state = 'available'
+                    if address_aux.phase_id.id != phase_id:
+                        address_aux.phase_id = phase_id
 
                     if person_aux.ref_address_id.id != address.id:
                         person_aux.ref_address_id = address.id
-
                     if person_aux.ref_address_aux_id.id != address_aux.id:
                         person_aux.ref_address_aux_id = address_aux.id
                         person_aux.do_person_aux_get_ref_address_aux_data()
 
-                    if address_aux.reg_state != 'revised':
-                        address_aux.reg_state = 'revised'
-
-                    if address_aux.state != 'available':
-                        address_aux.state = 'available'
-
-                    if address_aux.phase_id.id != phase_id:
-                        address_aux.phase_id = phase_id
+                    if person_aux.reg_state != 'revised':
+                        person_aux.reg_state = 'revised'
+                    if person_aux.state != 'available':
+                        person_aux.state = 'available'
+                    if person_aux.phase_id.id != phase_id:
+                        person_aux.phase_id = phase_id
 
                 elif new_person is False and change_address is True and new_address is True:
+
+                    reg_count_2 += 1
+                    _logger.info(u'>>>>>>>>>>>>>>>> [2]: %s', reg_count_2)
 
                     vals = {}
                     vals['zip'] = CEP
@@ -190,53 +207,34 @@ class AbstractProcess(models.AbstractModel):
 
                     if address_aux.reg_state != 'revised':
                         address_aux.reg_state = 'revised'
-
                     if address_aux.state != 'available':
                         address_aux.state = 'available'
-
                     if address_aux.phase_id.id != phase_id:
                         address_aux.phase_id = phase_id
-
-                    if person_aux.reg_state != 'revised':
-                        person_aux.reg_state = 'revised'
-
-                    if person_aux.state != 'available':
-                        person_aux.state = 'available'
-
-                    if person_aux.phase_id.id != phase_id:
-                        person_aux.phase_id = phase_id
 
                     if person_aux.ref_address_aux_id.id != address_aux.id:
                         person_aux.ref_address_aux_id = address_aux.id
                         person_aux.do_person_aux_get_ref_address_aux_data()
 
-                elif new_person is False and change_address is True and new_address == 'NULL':
-
                     if person_aux.reg_state != 'revised':
                         person_aux.reg_state = 'revised'
-
-                    if person_aux.state != 'unavailable':
-                        person_aux.state = 'unavailable'
-
-                    if person_aux.ref_address_is_unavailable is False:
-                        person_aux.ref_address_is_unavailable = True
-
-                    if person_aux.ref_address_id is not False:
-                        person_aux.ref_address_id = False
-
-                    if person_aux.ref_address_aux_is_unavailable is False:
-                        person_aux.ref_address_aux_is_unavailable = True
-
-                    if person_aux.ref_address_aux_id is not False:
-                        person_aux.ref_address_aux_id = False
-                        person_aux.do_person_aux_clear_address_data()
-                        person_aux.contact_info_is_unavailable = True
-
+                    if person_aux.state != 'available':
+                        person_aux.state = 'available'
                     if person_aux.phase_id.id != phase_id:
                         person_aux.phase_id = phase_id
 
                 elif new_person is True and change_address is True and new_address is False:
 
+                    reg_count_3 += 1
+                    _logger.info(u'>>>>>>>>>>>>>>>> [3]: %s', reg_count_3)
+
+                    if address_aux.reg_state != 'revised':
+                        address_aux.reg_state = 'revised'
+                    if address_aux.state != 'available':
+                        address_aux.state = 'available'
+                    if address_aux.phase_id.id != phase_id:
+                        address_aux.phase_id = phase_id
+
                     vals = {}
                     vals['name'] = person_name
                     vals['gender'] = gender[:1]
@@ -244,34 +242,35 @@ class AbstractProcess(models.AbstractModel):
                     date_object = datetime_date.date()
                     string_date = date_object.isoformat()
                     vals['birthday'] = datetime.strptime(string_date, '%Y-%m-%d')
+
+                    vals['street_name'] = address_aux.street_name
+                    vals['street_number'] = address_aux.street_number
+                    vals['street_number2'] = address_aux.street_number2
+                    vals['street2'] = address_aux.street2
+                    vals['zip'] = address_aux.zip
+                    vals['city'] = address_aux.city
+                    vals['city_id'] = address_aux.city_id.id
+                    vals['state_id'] = address_aux.state_id.id
+                    vals['country_id'] = address_aux.country_id.id
+
                     person_aux = PersonAux.create(vals)
 
                     if person_aux.ref_address_id.id != address.id:
                         person_aux.ref_address_id = address.id
-
                     if person_aux.ref_address_aux_id.id != address_aux.id:
                         person_aux.ref_address_aux_id = address_aux.id
-                        # person_aux.do_person_aux_get_ref_address_aux_data()
 
                     if person_aux.reg_state != 'revised':
                         person_aux.reg_state = 'revised'
-
                     if person_aux.state != 'available':
                         person_aux.state = 'available'
-
                     if person_aux.phase_id.id != phase_id:
                         person_aux.phase_id = phase_id
 
-                    if address_aux.reg_state != 'revised':
-                        address_aux.reg_state = 'revised'
-
-                    if address_aux.state != 'available':
-                        address_aux.state = 'available'
-
-                    if address_aux.phase_id.id != phase_id:
-                        address_aux.phase_id = phase_id
-
                 elif new_person is True and change_address is True and new_address is True:
+
+                    reg_count_4 += 1
+                    _logger.info(u'>>>>>>>>>>>>>>>> [4]: %s', reg_count_4)
 
                     vals = {}
                     vals['zip'] = CEP
@@ -286,10 +285,8 @@ class AbstractProcess(models.AbstractModel):
 
                     if address_aux.reg_state != 'revised':
                         address_aux.reg_state = 'revised'
-
                     if address_aux.state != 'available':
                         address_aux.state = 'available'
-
                     if address_aux.phase_id.id != phase_id:
                         address_aux.phase_id = phase_id
 
@@ -300,26 +297,72 @@ class AbstractProcess(models.AbstractModel):
                     date_object = datetime_date.date()
                     string_date = date_object.isoformat()
                     vals['birthday'] = datetime.strptime(string_date, '%Y-%m-%d')
+
+                    vals['street_name'] = address_aux.street_name
+                    vals['street_number'] = address_aux.street_number
+                    vals['street_number2'] = address_aux.street_number2
+                    vals['street2'] = address_aux.street2
+                    vals['zip'] = address_aux.zip
+                    vals['city'] = address_aux.city
+                    vals['city_id'] = address_aux.city_id.id
+                    vals['state_id'] = address_aux.state_id.id
+                    vals['country_id'] = address_aux.country_id.id
+
                     person_aux = PersonAux.create(vals)
 
                     if person_aux.ref_address_id.id != address.id:
                         person_aux.ref_address_id = address.id
-
                     if person_aux.ref_address_aux_id.id != address_aux.id:
                         person_aux.ref_address_aux_id = address_aux.id
-                        # person_aux.do_person_aux_get_ref_address_aux_data()
 
                     if person_aux.reg_state != 'revised':
                         person_aux.reg_state = 'revised'
-
                     if person_aux.state != 'available':
                         person_aux.state = 'available'
-
                     if person_aux.phase_id.id != phase_id:
                         person_aux.phase_id = phase_id
 
+                elif new_person is False and change_address is True and new_address == 'NULL':
+
+                    reg_count_5 += 1
+                    _logger.info(u'>>>>>>>>>>>>>>>> [5]: %s', reg_count_5)
+
+                    if person_aux.ref_address_is_unavailable is False:
+                        person_aux.ref_address_is_unavailable = True
+                    if person_aux.ref_address_id is not False:
+                        person_aux.ref_address_id = False
+                    if person_aux.ref_address_aux_is_unavailable is False:
+                        person_aux.ref_address_aux_is_unavailable = True
+                    if person_aux.ref_address_aux_id is not False:
+                        person_aux.ref_address_aux_id = False
+                        person_aux.do_person_aux_clear_address_data()
+                        person_aux.contact_info_is_unavailable = True
+
+                    if person_aux.reg_state != 'revised':
+                        person_aux.reg_state = 'revised'
+                    if person_aux.state != 'unavailable':
+                        person_aux.state = 'unavailable'
+                    if person_aux.phase_id.id != phase_id:
+                        person_aux.phase_id = phase_id
+
+        _logger.info(u'%s %s', '>>>>>>>>>>>>> row_count: ', row_count)
+        _logger.info(u'%s %s', '>>>>>>>>>>>>> reg_count_x: ', reg_count_x)
+        _logger.info(u'%s %s', '>>>>>>>>>>>>> reg_count_0: ', reg_count_0)
+        _logger.info(u'%s %s', '>>>>>>>>>>>>> reg_count_1: ', reg_count_1)
+        _logger.info(u'%s %s', '>>>>>>>>>>>>> reg_count_2: ', reg_count_2)
+        _logger.info(u'%s %s', '>>>>>>>>>>>>> reg_count_3: ', reg_count_3)
+        _logger.info(u'%s %s', '>>>>>>>>>>>>> reg_count_4: ', reg_count_4)
+        _logger.info(u'%s %s', '>>>>>>>>>>>>> reg_count_5: ', reg_count_5)
         _logger.info(u'%s %s', '>>>>>>>> Execution time: ', secondsToStr(time() - start))
 
         schedule.processing_log +=  \
             'date_last_exec: ' + str(date_last_exec) + '\n' + \
+            'row_count: ' + str(row_count) + '\n' + \
+            'reg_count_x: ' + str(reg_count_x) + '\n' + \
+            'reg_count_0: ' + str(reg_count_0) + '\n' + \
+            'reg_count_1: ' + str(reg_count_1) + '\n' + \
+            'reg_count_2: ' + str(reg_count_2) + '\n' + \
+            'reg_count_3: ' + str(reg_count_3) + '\n' + \
+            'reg_count_4: ' + str(reg_count_4) + '\n' + \
+            'reg_count_5: ' + str(reg_count_5) + '\n' + \
             'Execution time: ' + str(secondsToStr(time() - start)) + '\n'
