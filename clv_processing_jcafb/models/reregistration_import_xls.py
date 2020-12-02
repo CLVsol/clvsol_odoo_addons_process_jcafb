@@ -215,6 +215,8 @@ class AbstractProcess(models.AbstractModel):
                     if person_aux.ref_address_aux_id.id != address_aux.id:
                         person_aux.ref_address_aux_id = address_aux.id
                         person_aux.do_person_aux_get_ref_address_aux_data()
+                    if person_aux.ref_address_id is not False:
+                        person_aux.ref_address_id = False
 
                     if person_aux.reg_state != 'revised':
                         person_aux.reg_state = 'revised'
