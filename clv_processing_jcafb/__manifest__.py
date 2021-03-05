@@ -15,6 +15,7 @@
     ],
     'data': [
         'data/reregistration_import_xls.xml',
+        'data/reregistration_import_xls_patient.xml',
     ],
     'demo': [],
     'test': [],
