@@ -124,7 +124,7 @@ class AbstractProcess(models.AbstractModel):
                 _logger.info(u'>>>>>>>>>>>>>>>> Change Address: %s', change_address)
                 _logger.info(u'>>>>>>>>>>>>>>>> New Address: %s', new_address)
 
-                if new_patient is False and change_address is False and new_address  != 'NULL':
+                if new_patient is False and change_address is False and new_address != 'NULL':
 
                     reg_count_0 += 1
                     _logger.info(u'>>>>>>>>>>>>>>>> [0]: %s', reg_count_0)
@@ -136,7 +136,7 @@ class AbstractProcess(models.AbstractModel):
                     if patient_aux.phase_id.id != phase_id:
                         patient_aux.phase_id = phase_id
 
-                elif new_patient is False and change_address is True and new_address  != 'NULL':
+                elif new_patient is False and change_address is True and new_address != 'NULL':
 
                     reg_count_1 += 1
                     _logger.info(u'>>>>>>>>>>>>>>>> [1]: %s', reg_count_1)
@@ -173,7 +173,7 @@ class AbstractProcess(models.AbstractModel):
                     if patient_aux.phase_id.id != phase_id:
                         patient_aux.phase_id = phase_id
 
-                elif new_patient is True and change_address is True and new_address   != 'NULL':
+                elif new_patient is True and change_address is True and new_address != 'NULL':
 
                     reg_count_3 += 1
                     _logger.info(u'>>>>>>>>>>>>>>>> [3]: %s', reg_count_3)
