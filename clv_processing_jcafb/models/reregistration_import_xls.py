@@ -200,10 +200,12 @@ class AbstractProcess(models.AbstractModel):
                     address_aux.zip_search()
                     street_name = address_name[:address_name.find(',')]
                     street_number = address_name[address_name.find(', ') + 2:address_name.find('(') - 1]
+                    street_number2 = False
                     street2 = address_name[address_name.find('(') + 1:address_name.find(')')]
                     address_aux.street_name = street_name
                     address_aux.street2 = street2
                     address_aux.street_number = street_number
+                    address_aux.street_number2 = street_number2
 
                     if address_aux.reg_state != 'revised':
                         address_aux.reg_state = 'revised'
@@ -280,10 +282,12 @@ class AbstractProcess(models.AbstractModel):
                     address_aux.zip_search()
                     street_name = address_name[:address_name.find(',')]
                     street_number = address_name[address_name.find(', ') + 2:address_name.find('(') - 1]
+                    street_number2 = False
                     street2 = address_name[address_name.find('(') + 1:address_name.find(')')]
                     address_aux.street_name = street_name
                     address_aux.street2 = street2
                     address_aux.street_number = street_number
+                    address_aux.street_number2 = street_number2
 
                     if address_aux.reg_state != 'revised':
                         address_aux.reg_state = 'revised'
