@@ -74,14 +74,16 @@ class AbstractProcess(models.AbstractModel):
 
             rec = sheet.cell_value(i, 0)
             ok = sheet.cell_value(i, 1)
-            # person_code = sheet.cell_value(i, 2)
-            person_name = sheet.cell_value(i, 3)
-            gender = sheet.cell_value(i, 4)
-            date_of_birth = sheet.cell_value(i, 5)
-            address_name = sheet.cell_value(i, 6)
-            # district = sheet.cell_value(i, 7)
-            # city = sheet.cell_value(i, 8)
-            # responsible = shOk: %seet.cell_value(i, 9)
+            # patient = sheet.cell_value(i, 2)
+            # projeto = sheet.cell_value(i, 3)
+            # person_code = sheet.cell_value(i, 4)
+            person_name = sheet.cell_value(i, 5)
+            gender = sheet.cell_value(i, 6)
+            date_of_birth = sheet.cell_value(i, 7)
+            address_name = sheet.cell_value(i, 8)
+            # district = sheet.cell_value(i, 9)
+            # city = sheet.cell_value(i, 10)
+            # responsible = shOk: %seet.cell_value(i, 11)
 
             if ok == 'x':
 
