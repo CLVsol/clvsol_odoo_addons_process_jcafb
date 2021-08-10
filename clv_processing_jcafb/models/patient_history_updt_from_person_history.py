@@ -55,57 +55,64 @@ class AbstractProcess(models.AbstractModel):
 
             _logger.info(u'%s %s %s', '>>>>>>>> Person History: ', row_count, person_history)
 
-            vals = {}
+            if person_history.is_patient_history is False:
 
-            patient = Patient.search([
-                ('code', '=', person_history.person_id.code),
-            ])
-            if patient.id is not False:
-                vals['patient_id'] = patient.id
+                vals = {}
 
-                vals['phase_id'] = person_history.phase_id.id
-                vals['date_sign_in'] = person_history.date_sign_in
-                vals['date_sign_out'] = person_history.date_sign_out
-                vals['employee_id'] = person_history.employee_id.id
-                vals['reg_state'] = person_history.reg_state
-                vals['state'] = person_history.state
-
-                m2m_list = []
-                for category_id in person_history.category_ids:
-                    patient_category = PatientCategory.search([
-                        ('name', '=', category_id.name),
-                    ])
-                    m2m_list.append((4, patient_category.id))
-                if m2m_list != []:
-                    vals['category_ids'] = m2m_list
-
-                m2m_list = []
-                for marker_id in person_history.marker_ids:
-                    patient_marker = PatientMarker.search([
-                        ('name', '=', marker_id.name),
-                    ])
-                    m2m_list.append((4, patient_marker.id))
-                if m2m_list != []:
-                    vals['marker_ids'] = m2m_list
-
-                m2m_list = []
-                for tag_id in person_history.tag_ids:
-                    patient_tag = PatientTag.search([
-                        ('name', '=', tag_id.name),
-                    ])
-                    m2m_list.append((4, patient_tag.id))
-                if m2m_list != []:
-                    vals['tag_ids'] = m2m_list
-
-                residence = Residence.search([
-                    ('code', '=', person_history.ref_address_id.code),
+                patient = Patient.search([
+                    ('code', '=', person_history.person_id.code),
                 ])
-                if residence.id is not False:
-                    vals['residence_id'] = residence.id
+                if patient.id is not False:
+                    vals['patient_id'] = patient.id
 
-                patient_history = PatientHistory.create(vals)
+                    vals['phase_id'] = person_history.phase_id.id
+                    vals['date_sign_in'] = person_history.date_sign_in
+                    vals['date_sign_out'] = person_history.date_sign_out
+                    vals['employee_id'] = person_history.employee_id.id
+                    vals['reg_state'] = person_history.reg_state
+                    vals['state'] = person_history.state
 
-                _logger.info(u'%s %s %s', '>>>>>>>>>>>> Patient History: ', row_count, patient_history)
+                    m2m_list = []
+                    for category_id in person_history.category_ids:
+                        patient_category = PatientCategory.search([
+                            ('name', '=', category_id.name),
+                        ])
+                        m2m_list.append((4, patient_category.id))
+                    if m2m_list != []:
+                        vals['category_ids'] = m2m_list
+
+                    m2m_list = []
+                    for marker_id in person_history.marker_ids:
+                        patient_marker = PatientMarker.search([
+                            ('name', '=', marker_id.name),
+                        ])
+                        m2m_list.append((4, patient_marker.id))
+                    if m2m_list != []:
+                        vals['marker_ids'] = m2m_list
+
+                    m2m_list = []
+                    for tag_id in person_history.tag_ids:
+                        patient_tag = PatientTag.search([
+                            ('name', '=', tag_id.name),
+                        ])
+                        m2m_list.append((4, patient_tag.id))
+                    if m2m_list != []:
+                        vals['tag_ids'] = m2m_list
+
+                    residence = Residence.search([
+                        ('code', '=', person_history.ref_address_id.code),
+                    ])
+                    if residence.id is not False:
+                        vals['residence_id'] = residence.id
+
+                    vals['related_person_history_is_unavailable'] = False
+                    vals['related_person_history_id'] = person_history.id
+
+                    patient_history = PatientHistory.create(vals)
+
+                    person_history.is_patient_history = True
+
+                    _logger.info(u'%s %s %s', '>>>>>>>>>>>> Patient History: ', row_count, patient_history)
 
         _logger.info(u'%s %s', '>>>>>>>>>>>>> row_count: ', row_count)
         _logger.info(u'%s %s', '>>>>>>>> Execution time: ', secondsToStr(time() - start))
