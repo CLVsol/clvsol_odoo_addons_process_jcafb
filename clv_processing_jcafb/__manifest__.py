@@ -18,6 +18,7 @@
         'data/reregistration_import_xls_patient.xml',
         'data/patient_history_updt_from_person_history.xml',
         'data/residence_history_updt_from_address_history.xml',
+        'data/copy_qsf_from_residence_to_patient.xml',
     ],
     'demo': [],
     'test': [],
