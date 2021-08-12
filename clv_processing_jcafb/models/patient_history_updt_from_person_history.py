@@ -44,6 +44,7 @@ class AbstractProcess(models.AbstractModel):
         PatientCategory = self.env['clv.patient.category']
         PatientMarker = self.env['clv.patient.marker']
         PatientTag = self.env['clv.patient.tag']
+        AddressHistory = self.env['clv.address.history']
 
         person_histories = PersonHistory.search([])
 
@@ -63,14 +64,21 @@ class AbstractProcess(models.AbstractModel):
                     ('code', '=', person_history.person_id.code),
                 ])
                 if patient.id is not False:
+
                     vals['patient_id'] = patient.id
 
+                    vals['address_name'] = person_history.ref_address_id.name
                     vals['phase_id'] = person_history.phase_id.id
                     vals['date_sign_in'] = person_history.date_sign_in
                     vals['date_sign_out'] = person_history.date_sign_out
-                    vals['employee_id'] = person_history.employee_id.id
                     vals['reg_state'] = person_history.reg_state
                     vals['state'] = person_history.state
+
+                    address_history = AddressHistory.search([
+                        ('phase_id', '=', person_history.phase_id.id),
+                        ('address_id', '=', person_history.ref_address_id.id),
+                    ])
+                    vals['employee_id'] = address_history.employee_id.id
 
                     m2m_list = []
                     for category_id in person_history.category_ids:
