@@ -188,7 +188,7 @@ class AbstractProcess(models.AbstractModel):
 
                                 # qsf_document.marker_ids = [(4, has_related_QSI_QSC.id)]
                                 # patient_document.marker_ids = [(4, has_related_QSF.id)]
-                                patient_document.parent_id = qsf_document.id
+                                patient_qsf.parent_id = qsf_document.id
 
         _logger.info(u'%s %s', '>>>>>>>> row_count: ', row_count)
         _logger.info(u'%s %s', '>>>>>>>> Execution time: ', secondsToStr(time() - start))
