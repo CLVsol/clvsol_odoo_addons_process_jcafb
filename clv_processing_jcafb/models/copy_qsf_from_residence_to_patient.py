@@ -37,7 +37,7 @@ class AbstractProcess(models.AbstractModel):
             method_args = literal_eval(schedule.method_args)
         _logger.info(u'%s %s', '>>>>>>>>>> method_args: ', method_args)
 
-        DocumentMarker = self.env['clv.document.marker']
+        # DocumentMarker = self.env['clv.document.marker']
         Document = self.env['clv.document']
         DocumentType = self.env['clv.document.type']
         DocumentItem = self.env['clv.document.item']
@@ -58,21 +58,21 @@ class AbstractProcess(models.AbstractModel):
         QSC19_document_type_id = DocumentType.search([('code', '=', 'QSC19')]).id
         QSC20_document_type_id = DocumentType.search([('code', '=', 'QSC20')]).id
 
-        has_related_QSF = DocumentMarker.search([
-            ('name', '=', 'Has related QSF'),
-        ])
-        if has_related_QSF.id is False:
-            vals = {}
-            vals['name'] = 'Has related QSF'
-            has_related_QSF = DocumentMarker.create(vals)
+        # has_related_QSF = DocumentMarker.search([
+        #     ('name', '=', 'Has related QSF'),
+        # ])
+        # if has_related_QSF.id is False:
+        #     vals = {}
+        #     vals['name'] = 'Has related QSF'
+        #     has_related_QSF = DocumentMarker.create(vals)
 
-        has_related_QSI_QSC = DocumentMarker.search([
-            ('name', '=', 'Has related QSI/QSC'),
-        ])
-        if has_related_QSI_QSC.id is False:
-            vals = {}
-            vals['name'] = 'Has related QSI/QSC'
-            has_related_QSI_QSC = DocumentMarker.create(vals)
+        # has_related_QSI_QSC = DocumentMarker.search([
+        #     ('name', '=', 'Has related QSI/QSC'),
+        # ])
+        # if has_related_QSI_QSC.id is False:
+        #     vals = {}
+        #     vals['name'] = 'Has related QSI/QSC'
+        #     has_related_QSI_QSC = DocumentMarker.create(vals)
 
         qsf_documents = Document.search([
             ('document_type_id', 'in', [QSF17_document_type_id, QSF18_document_type_id,
@@ -186,8 +186,9 @@ class AbstractProcess(models.AbstractModel):
 
                                     DocumentItem.create(item_vals)
 
-                                qsf_document.marker_ids = [(4, has_related_QSI_QSC.id)]
-                                patient_document.marker_ids = [(4, has_related_QSF.id)]
+                                # qsf_document.marker_ids = [(4, has_related_QSI_QSC.id)]
+                                # patient_document.marker_ids = [(4, has_related_QSF.id)]
+                                patient_document.parent_id = qsf_document.id
 
         _logger.info(u'%s %s', '>>>>>>>> row_count: ', row_count)
         _logger.info(u'%s %s', '>>>>>>>> Execution time: ', secondsToStr(time() - start))
