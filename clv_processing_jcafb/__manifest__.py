@@ -19,6 +19,7 @@
         'data/patient_history_updt_from_person_history.xml',
         'data/residence_history_updt_from_address_history.xml',
         'data/copy_qsf_from_residence_to_patient.xml',
+        'data/survey_process_yaml.xml',
     ],
     'demo': [],
     'test': [],
