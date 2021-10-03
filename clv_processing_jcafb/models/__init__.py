@@ -7,3 +7,4 @@ from . import reregistration_import_xls_patient
 from . import patient_history_updt_from_person_history
 from . import residence_history_updt_from_address_history
 from . import copy_qsf_from_residence_to_patient
+from . import survey_process_yaml
